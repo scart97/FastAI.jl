@@ -1,4 +1,4 @@
-#=
+#= 
 FastAI.jl:
 
 Author: Peter Wolf (opus111@gmail.com)
@@ -49,6 +49,8 @@ export accumulate
 export value
 export name
 
+export TransformedList
+
 include("dataset.jl")
 include("databunch.jl")
 include("learner.jl")
@@ -57,5 +59,6 @@ include("callback.jl")
 include("metric.jl")
 include("recorder.jl")
 include("exercise.jl")
+include("TransformedList.jl")
 
 end
