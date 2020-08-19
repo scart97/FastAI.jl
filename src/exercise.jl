@@ -12,6 +12,7 @@ function synth_dbunch(;a=2, b=3, bs=16, n_train=10, n_valid=2)
             #xy[i,2] = y
             push!(xy,([x],[y]))
         end
+        xy = hcat.(xy...)
         return Flux.Data.DataLoader(xy, batchsize=bs, shuffle=true) 
     end
 
