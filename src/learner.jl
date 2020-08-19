@@ -173,20 +173,20 @@ Get the list of callbacks for `learner`.
 cbs(learner::Learner) = learner.cbs
 
 
-function split_batch(batch, n_inp=1)
+function split_batch(batch, n_inp::Integer=1)
     x = batch[begin:n_inp]
     y = batch[n_inp+1:end]
     return x, y
 end
 
-function train_step(learner::AbstractLearner, batch, batch_idx)
+function train_step(learner::AbstractLearner, batch, batch_idx::Integer)
     x, y = split_batch(batch, learner |> data_bunch |> n_inp)
     y_hat = model(learner)(x...)
     l = loss(learner)(y_hat, y...)
     return l
 end
 
-function train_epoch!(learner, parameters, epoch_idx)
+function train_epoch!(learner::AbstractLearner, parameters, epoch_idx::Integer)
     trainmode!(learner) # TODO: move to TrainEvalCallback
     for (batch_idx, batch) in enumerate(learner |> data_bunch |> train)
         gradients = gradient(parameters) do
@@ -198,7 +198,7 @@ function train_epoch!(learner, parameters, epoch_idx)
     end
 end
 
-function valid_step(learner::AbstractLearner, batch, batch_idx)
+function valid_step(learner::AbstractLearner, batch, batch_idx::Integer)
     x, y = split_batch(batch, learner |> data_bunch |> n_inp)
     y_hat = model(learner)(x...)
     l = loss(learner)(y_hat, y...)
@@ -206,7 +206,7 @@ function valid_step(learner::AbstractLearner, batch, batch_idx)
     return l
 end
 
-function valid_epoch(learner::AbstractLearner, epoch_idx)
+function valid_epoch(learner::AbstractLearner, epoch_idx::Integer)
     testmode!(learner) # TODO: move to TrainEvalCallback
     for (batch_idx, batch) in enumerate(learner |> data_bunch |> valid)
         valid_step(learner, batch, batch_idx)
@@ -218,7 +218,7 @@ end
 
 Fit [`model(learner)`](@ref model(::Learner)) for `epoch_count` epochs invoking callbacks for `learner`.
 """
-function fit!(learner, epochs)
+function fit!(learner::AbstractLearner, epochs::Integer)
     #TODO: the user can be able to specify multiple parameter
     # groups for differential learning rates
     parameters = Flux.params(model(learner))
@@ -227,9 +227,6 @@ function fit!(learner, epochs)
         valid_epoch(learner, epoch_idx)
     end
 end
-
-
-
 
 
 """
