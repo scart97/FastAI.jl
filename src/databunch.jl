@@ -15,7 +15,7 @@ end
 
 Estimate the number of inputs in the batch as all but the last element.
 """
-estimate_number_inp(dl::Flux.Data.DataLoader) = length(one_batch(dl)) - 1
+estimate_number_inp(dl::Flux.Data.DataLoader) = length(first(dl)) - 1
 
 """
     DataBunch(train::Flux.Data.DataLoader, valid::Flux.Data.DataLoader)
