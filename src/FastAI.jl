@@ -48,6 +48,7 @@ export reset
 export accumulate
 export value
 export name
+export n_inp
 
 include("dataset.jl")
 include("databunch.jl")
