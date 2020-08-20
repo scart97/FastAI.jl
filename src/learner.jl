@@ -174,58 +174,59 @@ cbs(learner::Learner) = learner.cbs
 
 
 function split_batch(batch, n_inp::Integer=1)
+    # To handle models with multiple inputs/outputs
+    # As the batch is a tuple, it returns two tuples
     x = batch[begin:n_inp]
     y = batch[n_inp+1:end]
     return x, y
 end
 
-function train_step(learner::AbstractLearner, batch, batch_idx::Integer)
+function batch_step(learner::AbstractLearner, batch, batch_idx::Integer, is_training::Bool)
     x, y = split_batch(batch, learner |> data_bunch |> n_inp)
+    # callback here
     y_hat = model(learner)(x...)
+    # callback here
     l = loss(learner)(y_hat, y...)
+    # callback here
     return l
 end
 
 function train_epoch!(learner::AbstractLearner, parameters, epoch_idx::Integer)
-    trainmode!(learner) # TODO: move to TrainEvalCallback
+    trainmode!(learner) # TODO: move to TrainEvalCallback ?
+    # callback here
     for (batch_idx, batch) in enumerate(learner |> data_bunch |> train)
         gradients = gradient(parameters) do
-            train_step(learner, batch, batch_idx)
+            batch_step(learner, batch, batch_idx, true)
         end
+        # callback here
         # TODO: multiple optimizers and parameter groups
+        # TODO: Also have schedulers and update them
         update!(opt(learner), parameters, gradients) 
-        #TODO: Also have schedulers and update them
     end
+    # callback here
 end
 
-function valid_step(learner::AbstractLearner, batch, batch_idx::Integer)
-    x, y = split_batch(batch, learner |> data_bunch |> n_inp)
-    y_hat = model(learner)(x...)
-    l = loss(learner)(y_hat, y...)
-    #TODO: metrics calculation go into Recorder callback
-    return l
-end
 
 function valid_epoch(learner::AbstractLearner, epoch_idx::Integer)
-    testmode!(learner) # TODO: move to TrainEvalCallback
+    testmode!(learner) # TODO: move to TrainEvalCallback ?
+    # callback here
     for (batch_idx, batch) in enumerate(learner |> data_bunch |> valid)
-        valid_step(learner, batch, batch_idx)
+        batch_step(learner, batch, batch_idx, false)
     end
+    # callback here
 end
 
-"""
-    fit(learner::Learner, epoch_count)
-
-Fit [`model(learner)`](@ref model(::Learner)) for `epoch_count` epochs invoking callbacks for `learner`.
-"""
 function fit!(learner::AbstractLearner, epochs::Integer)
-    #TODO: the user can be able to specify multiple parameter
+    # TODO: the user can be able to specify multiple parameter
     # groups for differential learning rates
+    
+    # callback here
     parameters = Flux.params(model(learner))
     for epoch_idx in 1:epochs
         train_epoch!(learner, parameters, epoch_idx)
         valid_epoch(learner, epoch_idx)
     end
+    # callback here
 end
 
 
