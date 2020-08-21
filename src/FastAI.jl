@@ -49,7 +49,7 @@ export value
 export name
 
 export Callback
-export handle_callback!
+export handle!
 export fit!
 
 include("data/dataset.jl")
@@ -61,6 +61,7 @@ include("learner.jl")
 include("metric.jl")
 # include("callbacks/recorder.jl")
 include("callbacks/dummy.jl")
+include("callbacks/gpu.jl")
 include("exercise.jl")
 include("train.jl")
 

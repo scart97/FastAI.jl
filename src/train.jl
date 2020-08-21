@@ -10,14 +10,14 @@ end
 function (handler::CallbackHandler)(phase::AbstractPhase, event::AbstractEvent)
     for cb in cbs(handler.learner)
         # This is what the user will implement
-        handle_callback!(cb, handler.learner, phase, event)
+        handle!(cb, handler.learner, phase, event)
     end
     # This control what modified state will be returned
     return_params(phase, event)
 end
 
 # This is what the user will implement
-function handle_callback!(::AbstractCallback, ::AbstractLearner, ::AbstractPhase, ::AbstractEvent)
+function handle!(::AbstractCallback, ::AbstractLearner, ::AbstractPhase, ::AbstractEvent)
     nothing
 end
 
@@ -70,15 +70,13 @@ end
 
 
 function valid_epoch(learner::AbstractLearner, handler::CallbackHandler, epoch_idx::Integer)
-    testmode!(learner) # TODO: move to TrainEvalCallback ?
-    # callback here - BeforeEpochEvent
     val_phase = Phases.ValidationPhase(epoch_idx)
     handler(val_phase, Events.BeforeEpochEvent())
     for (batch_idx, batch) in enumerate(learner |> data_bunch |> valid)
         batch_step(learner, batch, val_phase, handler)
+        # callback here - CancelBatchEvent 
     end
     handler(val_phase, Events.AfterEpochEvent())
-    # callback here - AfterEpochEvent
 
     # callback here - CancelEpochEvent
 end
