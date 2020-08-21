@@ -1,8 +1,7 @@
-#=
+#= 
 FastAI.jl:
 
-Author: Peter Wolf (opus111@gmail.com)
-=#
+Author: Peter Wolf (opus111@gmail.com) =#
 
 module FastAI
 
@@ -50,13 +49,13 @@ export value
 export name
 export n_inp
 
-include("dataset.jl")
-include("databunch.jl")
+include("data/dataset.jl")
+include("data/databunch.jl")
 include("learner.jl")
-include("callback.jl")
+include("callbacks/callback.jl")
 
 include("metric.jl")
-include("recorder.jl")
+include("callbacks/recorder.jl")
 include("exercise.jl")
 
 end
