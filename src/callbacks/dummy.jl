@@ -1,22 +1,27 @@
+using ..Callback.Phases
+using ..Callback.Events
+
 struct DummyCallback <: AbstractCallback end
 
-function before_fit(cb::DummyCallback, lrn::AbstractLearner, n_epoch) println("Before Fit") end
-function after_fit(cb::DummyCallback, lrn::AbstractLearner) println("After Fit") end
-function after_cancel_fit(cb::DummyCallback, lrn::AbstractLearner) println("After Cancel Fit") end
-function before_epoch(cb::DummyCallback, lrn::AbstractLearner, epoch) println("Before Epoch") end
-function after_epoch(cb::DummyCallback, lrn::AbstractLearner, epoch) println("After Epoch") end
-function after_cancel_epoch(cb::DummyCallback, lrn::AbstractLearner, epoch) println("After Cancel Epoch") end
-function before_epoch_train(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nBefore Epoch Train") end
-function after_epoch_train(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nAfter Epoch Train") end
-function after_cancel_epoch_train(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nAfter Cancel Epoch Train") end
-function before_epoch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nBefore Epoch Validate") end
-function after_epoch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nAfter Epoch Validate") end
-function after_cancel_epoch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch) println("\nAfter Cancel Epoch Validate") end
-function before_batch_train(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) print("Before Batch Train,") end
-function after_batch_train(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) print("After Batch Train,")  end
-function batch_train_loss(cb::DummyCallback, lrn::AbstractLearner, loss, epoch, batch) print("Batch Train Loss = $(loss)")  end
-function after_cancel_batch_train(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) print("After Cancel Batch Train")  end
-function before_batch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) print("Before Batch Validate,")  end
-function after_batch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) print("After Batch Validate") end
-function batch_validate_loss(cb::DummyCallback, lrn::AbstractLearner, loss, epoch, batch) println("Batch Validate Loss = $(loss)") end
-function after_cancel_batch_validate(cb::DummyCallback, lrn::AbstractLearner, epoch, batch) println("After Cancel Batch Validate") end
+handle_callback!(::DummyCallback, ::AbstractLearner, ::InitializationPhase, ::BeforeFitEvent) = println("Initializing training")
+
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::BeforeEpochEvent) = println("Train before epoch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::BeforePredictEvent) = println("Train before predict")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::BeforeLossEvent) = println("Train before loss")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::AfterLossEvent) = println("Train after loss")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::BeforeUpdateEvent) = println("Train before update")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::CancelBatchEvent) = println("Train cancel batch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::AfterEpochEvent) = println("Train after epoch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::TrainPhase, ::CancelEpochEvent) = println("Train cancel epoch")
+
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::BeforeEpochEvent) = println("Validation before epoch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::BeforePredictEvent) = println("Validation before predict")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::BeforeLossEvent) = println("Validation before loss")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::AfterLossEvent) = println("Validation after loss")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::BeforeUpdateEvent) = println("Validation before update")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::CancelBatchEvent) = println("Validation cancel batch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::AfterEpochEvent) = println("Validation after epoch")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::ValidationPhase, ::CancelEpochEvent) = println("Validation cancel epoch")
+
+handle_callback!(::DummyCallback, ::AbstractLearner, ::CleanupPhase, ::AfterFitEvent) = println("Cleanup after fit")
+handle_callback!(::DummyCallback, ::AbstractLearner, ::CleanupPhase, ::CancelFitEvent) = println("Cleanup cancel fit")

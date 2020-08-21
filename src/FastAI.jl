@@ -38,7 +38,6 @@ export loss
 export loss!
 export opt
 export opt!
-export fit!
 export add_cb!
 
 export AvgMetric
@@ -50,7 +49,8 @@ export value
 export name
 
 export Callback
-
+export handle_callback!
+export fit!
 
 include("data/dataset.jl")
 include("data/databunch.jl")
@@ -60,6 +60,7 @@ include("learner.jl")
 
 include("metric.jl")
 # include("callbacks/recorder.jl")
+include("callbacks/dummy.jl")
 include("exercise.jl")
 include("train.jl")
 

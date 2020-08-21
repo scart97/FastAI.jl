@@ -9,7 +9,7 @@ end
 # Handling the callbacks
 function (handler::CallbackHandler)(phase::AbstractPhase, event::AbstractEvent)
     for cb in cbs(handler.learner)
-        # This is what the user will implement        
+        # This is what the user will implement
         handle_callback!(cb, handler.learner, phase, event)
     end
     # This control what modified state will be returned
@@ -21,7 +21,7 @@ function handle_callback!(::AbstractCallback, ::AbstractLearner, ::AbstractPhase
     nothing
 end
 
-# This control what modified state will be changed
+# This control what modified state will be returned
 return_params(::AbstractPhase, ::AbstractEvent) = nothing
 return_params(::Phases.InitializationPhase, e::Events.BeforeFitEvent) = e.epochs
 return_params(p::Phases.TrainPhase, ::Events.BeforeEpochEvent) = p.parameters

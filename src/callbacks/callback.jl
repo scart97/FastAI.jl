@@ -102,16 +102,16 @@ end
 struct CancelBatchEvent <: AbstractEvent end
 
 export AbstractEvent,
-    BeforeFitEvent
-    BeforeEpochEvent
+    BeforeFitEvent,
+    BeforeEpochEvent,
     BeforePredictEvent,
     BeforeLossEvent,
     AfterLossEvent,
     BeforeUpdateEvent,
-    CancelBatchEvent
-    AfterEpochEvent
-    CancelEpochEvent
-    AfterFitEvent
+    CancelBatchEvent,
+    AfterEpochEvent,
+    CancelEpochEvent,
+    AfterFitEvent,
     CancelFitEvent
 
 end

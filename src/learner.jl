@@ -15,10 +15,6 @@ The documentation is copied from here
 
 https://github.com/fastai/fastai2/blob/master/docs/learner.html =#
 
-# using ..Callback
-
-
-
 """
     AbstractLearner
 
