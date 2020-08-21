@@ -61,6 +61,6 @@ include("learner.jl")
 include("metric.jl")
 # include("callbacks/recorder.jl")
 include("exercise.jl")
-# include("train.jl")
+include("train.jl")
 
 end

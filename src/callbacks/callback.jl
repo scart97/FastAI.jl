@@ -34,15 +34,15 @@ abstract type AbstractPhase end
 
 mutable struct TrainPhase <: AbstractPhase
     parameters
-    counter::PhaseCounter
+    epoch_idx::Integer
 end
 
 struct ValidationPhase <: AbstractPhase 
-    counter::PhaseCounter
+    epoch_idx::Integer
 end
 
 struct TestPhase <: AbstractPhase
-    counter::PhaseCounter
+    epoch_idx::Integer
 end
 struct InitializationPhase <: AbstractPhase end
 struct CleanupPhase <: AbstractPhase end
@@ -66,8 +66,8 @@ abstract type AbstractEvent end
 # BeforeFitEvent
     # BeforeEpochEvent
         # BeforePredictEvent - x, y
-        # BeforeLossEvent - x, y, y_hat 
-        # AfterLossEvent - x, y, y_hat, loss_val
+        # BeforeLossEvent - y, y_hat 
+        # AfterLossEvent - loss_val
         # BeforeUpdateEvent - gradients
         # CancelBatchEvent
     # AfterEpochEvent
@@ -75,7 +75,9 @@ abstract type AbstractEvent end
 # AfterFitEvent
 # CancelFitEvent 
 
-struct BeforeFitEvent <: AbstractEvent end
+mutable struct BeforeFitEvent <: AbstractEvent
+    epochs::Integer
+end
 struct AfterFitEvent <: AbstractEvent end
 struct CancelFitEvent  <: AbstractEvent end
 
@@ -88,14 +90,10 @@ mutable struct BeforePredictEvent <: AbstractEvent
     y
 end
 mutable struct BeforeLossEvent <: AbstractEvent 
-    x
     y
     y_hat 
 end
 mutable struct AfterLossEvent <: AbstractEvent 
-    x
-    y
-    y_hat
     loss_val
 end
 mutable struct BeforeUpdateEvent <: AbstractEvent 
