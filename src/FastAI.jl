@@ -25,6 +25,7 @@ export MapDataset
 export DataBunch
 export train
 export valid
+export n_inp
 
 export DummyCallback
 export ProgressCallback
@@ -47,15 +48,19 @@ export reset
 export accumulate
 export value
 export name
-export n_inp
+
+export Callback
+
 
 include("data/dataset.jl")
 include("data/databunch.jl")
-include("learner.jl")
 include("callbacks/callback.jl")
+include("learner.jl")
+
 
 include("metric.jl")
-include("callbacks/recorder.jl")
+# include("callbacks/recorder.jl")
 include("exercise.jl")
+# include("train.jl")
 
 end

@@ -18,6 +18,9 @@ https://github.com/fastai/fastai2/blob/master/docs/callback.core.html
 Extra influence:
 https://github.com/lorenzoh/FluxTraining.jl/blob/master/src/callbacks/callback.jl =#
 
+module Callback
+
+module Phases
 
 # Those go into the callback handler ?
 struct PhaseCounter
@@ -26,8 +29,6 @@ struct PhaseCounter
     total_batches::Union{Nothing,Integer}
     batch_idx::Union{Nothing,Integer}
 end
-
-module Phases
 
 abstract type AbstractPhase end
 
@@ -40,7 +41,7 @@ struct ValidationPhase <: AbstractPhase
     counter::PhaseCounter
 end
 
-struct TestPhase <: AbstractFittingPhase
+struct TestPhase <: AbstractPhase
     counter::PhaseCounter
 end
 struct InitializationPhase <: AbstractPhase end
@@ -51,7 +52,8 @@ export AbstractPhase,
     ValidationPhase,
     TestPhase,
     InitializationPhase,
-    CleanupPhase
+    CleanupPhase,
+    PhaseCounter
 end
 
 using .Phases
@@ -139,3 +141,5 @@ By default handling of these events do nothing.  Special behavior is implemented
 
 """
 abstract type AbstractCallback end
+
+end
